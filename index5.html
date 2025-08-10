@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>✞</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root{ --fg:#e9e9e9; --muted:#bdbdbd; --bg:#0b0b0b; --glass:rgba(11,11,11,0.45); }
+    html,body{ height:100%; margin:0; font-family:Inter,sans-serif; background:var(--bg); color:var(--fg); overflow:hidden; }
+
+    /* BACKGROUND VIDEO */
+    .stage{ position:fixed; inset:0; overflow:hidden; }
+    .stage video{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transition:filter .3s ease; filter:blur(6px) brightness(.82) contrast(1.05) saturate(1.06); }
+    .stage.clear video{ filter:none; }
+
+    /* GATE */
+    .gate{ position:fixed; inset:0; display:grid; place-items:center; z-index:3; }
+    .markbtn{ background:transparent; border:0; color:var(--fg); cursor:pointer; font-size:clamp(72px,14vw,140px); }
+    .hidden{ display:none!important; }
+
+    /* CARDS */
+    .deckwrap{ position:relative; z-index:2; height:100%; width:100%; display:grid; place-items:center; padding:2rem; perspective: 1000px; }
+    .deck{ display:grid; gap:1.25rem; grid-template-columns:repeat(3,minmax(260px,300px)); opacity:0; transform:translateY(8px); pointer-events:none; transition:.28s ease; }
+    .deck.open{ opacity:1; transform:translateY(0); pointer-events:auto; }
+
+    .card{
+      background:var(--glass);
+      backdrop-filter:blur(20px) saturate(140%);
+      -webkit-backdrop-filter:blur(20px) saturate(140%);
+      border-radius:1.25rem;
+      padding:1.25rem;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      text-align:center;
+      border:1px solid rgba(255,255,255,0.15);
+      transform-style: preserve-3d;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      will-change: transform;
+    }
+    .pfp{ width:120px; height:120px; border-radius:50%; overflow:hidden; background:#00000033; display:grid; place-items:center; color:#ffffff88; }
+    .pfp img{ width:100%; height:100%; object-fit:cover; display:block }
+    .pfp:empty::after{ content:"sem foto"; font-size:.8rem; }
+
+    .name{ margin-top:1rem; font-weight:800; font-size:1.25rem; }
+    .sub{ color:var(--muted); font-size:.92rem; margin-top:.1rem; display:flex; align-items:center; gap:6px; }
+    .sub img{ width:16px; height:16px; }
+
+    .fc-link{ margin-top:auto; font-size:.92rem; text-decoration:none; color:var(--fg); border:1px solid rgba(255,255,255,0.15); padding:.42rem .8rem; border-radius:.6rem; }
+
+    /* Som */
+    .soundbtn{ position:fixed; right:16px; bottom:16px; z-index:4; display:none; background:#000c; color:var(--fg); padding:.5rem .8rem; border-radius:.7rem; }
+    .soundbtn.show{ display:inline-flex; }
+
+    @media(max-width:1024px){ .deck{ grid-template-columns:repeat(2,minmax(260px,1fr)); } }
+    @media(max-width:640px){ .deck{ grid-template-columns:1fr; } }
+  </style>
+</head>
+<body>
+  <div class="stage" id="stage">
+    <video autoplay muted loop playsinline>
+      <source src="https://github.com/bnwx2008/musica/releases/download/dsadsa/videoplayback.webm" type="video/webm">
+    </video>
+  </div>
+  <audio id="bgm" src="https://raw.githubusercontent.com/bnwx2008/musica/main/Isabel%20LaRosa%20-%20older%20(Audio)%20-%20IsabelLaRosaVEVO.mp3" preload="auto"></audio>
+  <button id="soundbtn" class="soundbtn">🔊 Som</button>
+
+  <div class="gate" id="gate">
+    <button class="markbtn" id="enter">✞</button>
+  </div>
+
+  <div class="deckwrap">
+    <section class="deck" id="deck" aria-hidden="true">
+      <article class="card">
+        <div class="pfp"><img src="https://github.com/bnwx2008/musica/releases/download/dsadsa/nk7.png" alt="Avatar nk7" /></div>
+        <div class="name">nk7</div>
+        <div class="sub"><img src="https://github.com/bnwx2008/musica/releases/download/dsadsa/discord.png" alt="">coroei</div>
+        <a class="fc-link" href="https://fakecrime.bio/nk7" target="_blank" rel="noopener">fakecrime.bio/nk7</a>
+      </article>
+      <article class="card">
+        <div class="pfp"><img src="https://github.com/bnwx2008/musica/releases/download/dsadsa/bnbnbn.jpg" alt="Avatar bn" /></div>
+        <div class="name">bn</div>
+        <div class="sub"><img src="https://github.com/bnwx2008/musica/releases/download/dsadsa/discord.png" alt="">did4luv</div>
+        <a class="fc-link" href="https://fakecrime.bio/4luv" target="_blank" rel="noopener">fakecrime.bio/4luv</a>
+      </article>
+      <article class="card">
+        <div class="pfp"><img src="https://github.com/bnwx2008/musica/releases/download/dsadsa/37f8dc3b3e33507bb16cfc6416f59546.webp" alt="Avatar nhz" /></div>
+        <div class="name">nhz</div>
+        <div class="sub"><img src="https://github.com/bnwx2008/musica/releases/download/dsadsa/discord.png" alt="">valuethepeoplewholoveyou</div>
+        <a class="fc-link" href="https://fakecrime.bio/969" target="_blank" rel="noopener">fakecrime.bio/969</a>
+      </article>
+    </section>
+  </div>
+
+  <script>
+    const gate=document.getElementById('gate');
+    const btn=document.getElementById('enter');
+    const deck=document.getElementById('deck');
+    const stage=document.getElementById('stage');
+    const audio=document.getElementById('bgm');
+    const soundbtn=document.getElementById('soundbtn');
+
+    function openSite(){
+      gate.classList.add('hidden');
+      stage.classList.add('clear');
+      deck.classList.add('open');
+      deck.setAttribute('aria-hidden','false');
+      audio.volume = 0.5;
+      try{ audio.currentTime=37.5; }catch(e){}
+      audio.play().catch(()=>{ soundbtn.classList.add('show'); });
+    }
+
+    btn.addEventListener('click',openSite);
+    soundbtn.addEventListener('click',()=>{
+      audio.volume = 0.5;
+      try{ audio.currentTime=37.5; }catch(e){}
+      audio.play().then(()=>{ soundbtn.classList.remove('show'); });
+    });
+
+    // Tilt igual fakecrime.bio (suave)
+    document.querySelectorAll('.card').forEach(card => {
+      let x=0, y=0;
+      card.addEventListener('mousemove', e => {
+        const rect = card.getBoundingClientRect();
+        const offsetX = e.clientX - rect.left;
+        const offsetY = e.clientY - rect.top;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        const percentX = (offsetX - centerX) / centerX;
+        const percentY = (centerY - offsetY) / centerY;
+        const rotateX = percentY * 15;
+        const rotateY = percentX * 15;
+        card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
+        card.style.transition = 'transform 0.1s ease';
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = `rotateX(0deg) rotateY(0deg) scale(1)`;
+        card.style.transition = 'transform 0.4s ease';
+      });
+    });
+  </script>
+</body>
+</html>
